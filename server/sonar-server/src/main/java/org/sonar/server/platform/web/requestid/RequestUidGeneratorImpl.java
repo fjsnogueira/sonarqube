@@ -69,7 +69,7 @@ public class RequestUidGeneratorImpl implements RequestUidGenerator {
   public String generate() {
     UuidGenerator.WithFixedBase currentUuidGenerator = this.uuidGenerator.get();
     long counterValue = counter.getAndIncrement();
-    if (mustRenewUuidGenerator(counterValue)) {
+    if (counterValue != 0 && mustRenewUuidGenerator(counterValue)) {
       UuidGenerator.WithFixedBase newUuidGenerator = requestUidGeneratorBase.createNew();
       uuidGenerator.set(newUuidGenerator);
       return generate(newUuidGenerator, counterValue);
