@@ -50,7 +50,7 @@ public class ShowActionTest {
   @Before
   public void setUp() {
     action = new ShowAction(service, userSessionRule);
-    tester = new WsTester(new IssueFilterWs(mock(AppAction.class), action, mock(SearchAction.class), mock(FavoritesAction.class)));
+    tester = new WsTester(new IssueFilterWs(mock(AppAction.class)));
   }
 
   @Test
@@ -58,8 +58,7 @@ public class ShowActionTest {
     // logged-in user is 'eric' but filter is owned by 'simon'
     userSessionRule.login("eric").setUserId(123).setGlobalPermissions("none");
     when(service.find(13L, userSessionRule)).thenReturn(
-      new IssueFilterDto().setId(13L).setName("Blocker issues").setDescription("All Blocker Issues").setData("severity=BLOCKER").setUserLogin("simon").setShared(true)
-    );
+      new IssueFilterDto().setId(13L).setName("Blocker issues").setDescription("All Blocker Issues").setData("severity=BLOCKER").setUserLogin("simon").setShared(true));
 
     tester.newGetRequest("api/issue_filters", "show").setParam("id", "13").execute()
       .assertJson(getClass(), "show_filter.json");

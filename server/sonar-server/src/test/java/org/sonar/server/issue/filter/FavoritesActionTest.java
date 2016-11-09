@@ -51,7 +51,7 @@ public class FavoritesActionTest {
   @Before
   public void setUp() {
     action = new FavoritesAction(service, userSessionRule);
-    tester = new WsTester(new IssueFilterWs(mock(AppAction.class), mock(ShowAction.class), mock(SearchAction.class), action));
+    tester = new WsTester(new IssueFilterWs(mock(AppAction.class)));
   }
 
   @Test
@@ -66,8 +66,7 @@ public class FavoritesActionTest {
   public void favorites_of_logged_in_user() throws Exception {
     userSessionRule.login("eric").setUserId(123);
     when(service.findFavoriteFilters(userSessionRule)).thenReturn(Arrays.asList(
-      new IssueFilterDto().setId(13L).setName("Blocker issues").setData("severity=BLOCKER").setUserLogin("simon").setShared(true)
-    ));
+      new IssueFilterDto().setId(13L).setName("Blocker issues").setData("severity=BLOCKER").setUserLogin("simon").setShared(true)));
 
     tester.newGetRequest("api/issue_filters", "favorites").execute()
       .assertJson("{\"favoriteFilters\": [{\"id\": 13, \"name\": \"Blocker issues\", \"user\": \"simon\", \"shared\": true}]}");

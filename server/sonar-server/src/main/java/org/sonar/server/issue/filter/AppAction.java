@@ -19,23 +19,19 @@
  */
 package org.sonar.server.issue.filter;
 
-import java.util.List;
 import org.sonar.api.server.ws.Request;
 import org.sonar.api.server.ws.Response;
 import org.sonar.api.server.ws.WebService;
 import org.sonar.api.utils.text.JsonWriter;
-import org.sonar.db.issue.IssueFilterDto;
 import org.sonar.server.user.UserSession;
+import org.sonar.server.ws.WsAction;
 
-import static org.sonar.server.issue.filter.IssueFilterJsonWriter.writeWithName;
+// TODO remove this WS when ui won't rely on it to know if the user can bulk
+public class AppAction implements WsAction {
 
-public class AppAction implements IssueFilterWsAction {
-
-  private final IssueFilterService service;
   private final UserSession userSession;
 
-  public AppAction(IssueFilterService service, UserSession userSession) {
-    this.service = service;
+  public AppAction(UserSession userSession) {
     this.userSession = userSession;
   }
 
@@ -50,44 +46,14 @@ public class AppAction implements IssueFilterWsAction {
       .setResponseExample(getClass().getResource("example-app.json"));
     action
       .createParam("id")
-      .setDescription("Optionally, the ID of the current filter");
+      .setDeprecatedSince("6.2");
   }
 
   @Override
   public void handle(Request request, Response response) throws Exception {
     JsonWriter json = response.newJsonWriter();
     json.beginObject();
-
-    // Current filter (optional)
-    Integer filterId = request.paramAsInt("id");
-    IssueFilterDto filter = null;
-    if (filterId != null && filterId >= 0) {
-      filter = service.find((long) filterId, userSession);
-    }
-
-    // Permissions
-    json.prop("canManageFilters", userSession.isLoggedIn());
     json.prop("canBulkChange", userSession.isLoggedIn());
-
-    // Selected filter
-    if (filter != null) {
-      writeWithName(json, filter, userSession);
-    }
-
-    // Favorite filters, if logged in
-    if (userSession.isLoggedIn()) {
-      List<IssueFilterDto> favorites = service.findFavoriteFilters(userSession);
-      json.name("favorites").beginArray();
-      for (IssueFilterDto favorite : favorites) {
-        json
-          .beginObject()
-          .prop("id", favorite.getId())
-          .prop("name", favorite.getName())
-          .endObject();
-      }
-      json.endArray();
-    }
-
     json.endObject();
     json.close();
   }

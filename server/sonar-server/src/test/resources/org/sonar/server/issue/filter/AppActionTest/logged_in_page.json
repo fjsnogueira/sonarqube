@@ -1,5 +1,3 @@
 {
-    "canManageFilters": true,
-    "canBulkChange": true,
-    "favorites": []
+  "canBulkChange": true
 }

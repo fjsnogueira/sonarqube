@@ -23,12 +23,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.sonar.api.server.ws.WebService;
-import org.sonar.db.DbClient;
 import org.sonar.server.tester.UserSessionRule;
 import org.sonar.server.ws.WsTester;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 public class IssueFilterWsTest {
   @Rule
@@ -39,13 +37,7 @@ public class IssueFilterWsTest {
 
   @Before
   public void setUp() {
-    IssueFilterService service = mock(IssueFilterService.class);
-    DbClient dbClient = mock(DbClient.class);
-    underTest = new IssueFilterWs(
-      new AppAction(service, userSession),
-      new ShowAction(service, userSession),
-      new SearchAction(dbClient, userSession),
-      new FavoritesAction(service, userSession));
+    underTest = new IssueFilterWs(new AppAction(userSession));
     ws = new WsTester(underTest);
   }
 
@@ -59,19 +51,6 @@ public class IssueFilterWsTest {
     WebService.Action app = controller.action("app");
     assertThat(app).isNotNull();
     assertThat(app.params()).hasSize(1);
-
-    WebService.Action show = controller.action("show");
-    assertThat(show).isNotNull();
-    assertThat(show.responseExampleAsString()).isNotEmpty();
-    assertThat(show.params()).hasSize(1);
-
-    WebService.Action favorites = controller.action("favorites");
-    assertThat(favorites).isNotNull();
-    assertThat(favorites.params()).isEmpty();
-
-    WebService.Action search = controller.action("search");
-    assertThat(search).isNotNull();
-    assertThat(search.params()).isEmpty();
   }
 
 }

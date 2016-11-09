@@ -23,10 +23,10 @@ import org.sonar.api.server.ws.WebService;
 
 public class IssueFilterWs implements WebService {
 
-  private final IssueFilterWsAction[] actions;
+  private final AppAction appAction;
 
-  public IssueFilterWs(IssueFilterWsAction... actions) {
-    this.actions = actions;
+  public IssueFilterWs(AppAction appAction) {
+    this.appAction = appAction;
   }
 
   @Override
@@ -34,9 +34,7 @@ public class IssueFilterWs implements WebService {
     NewController controller = context.createController("api/issue_filters")
       .setSince("4.2")
       .setDescription("Get details on existing issue filters/saved issue searches.");
-    for (IssueFilterWsAction action : actions) {
-      action.define(controller);
-    }
+    appAction.define(controller);
     controller.done();
   }
 
