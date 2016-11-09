@@ -34,7 +34,6 @@ import LanguageFacet from './facets/language-facet';
 import AuthorFacet from './facets/author-facet';
 import IssueKeyFacet from './facets/issue-key-facet';
 import ContextFacet from './facets/context-facet';
-import ModeFacet from './facets/mode-facet';
 
 const viewsMapping = {
   types: TypeFacet,
@@ -51,8 +50,7 @@ const viewsMapping = {
   languages: LanguageFacet,
   authors: AuthorFacet,
   issues: IssueKeyFacet,
-  context: ContextFacet,
-  facetMode: ModeFacet
+  context: ContextFacet
 };
 
 export default FacetsView.extend({

@@ -17,15 +17,36 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-import _ from 'underscore';
-import BaseFacet from './base-facet';
-import Template from '../templates/facets/issues-mode-facet.hbs';
+import Marionette from 'backbone.marionette';
+import Template from './templates/facets/issues-my-issues-facet.hbs';
 
-export default BaseFacet.extend({
+export default Marionette.ItemView.extend({
   template: Template,
 
   events: {
+    'change [name="issues-page-my"]': 'onMyIssuesChange',
     'change [name="issues-page-mode"]': 'onModeChange'
+  },
+
+  initialize () {
+    this.listenTo(this.options.app.state, 'change:query', this.render);
+  },
+
+  onMyIssuesChange () {
+    const mode = this.$('[name="issues-page-my"]:checked').val();
+    if (mode === 'my') {
+      this.options.app.state.updateFilter({
+        assigned_to_me: 'true',
+        assignees: null,
+        assigned: null
+      });
+    } else {
+      this.options.app.state.updateFilter({
+        assigned_to_me: null,
+        assignees: null,
+        assigned: null
+      });
+    }
   },
 
   onModeChange () {
@@ -34,9 +55,14 @@ export default BaseFacet.extend({
   },
 
   serializeData () {
-    return _.extend(BaseFacet.prototype.serializeData.apply(this, arguments), {
-      mode: this.options.app.state.getFacetMode()
-    });
+    const me = !!this.options.app.state.get('query').assigned_to_me;
+    return {
+      ...Marionette.ItemView.prototype.serializeData.apply(this, arguments),
+      me,
+      mode: this.options.app.state.getFacetMode(),
+      isContext: this.options.app.state.get('isContext'),
+      user: window.SS.user
+    };
   }
 });
 

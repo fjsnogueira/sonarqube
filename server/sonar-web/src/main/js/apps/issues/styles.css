@@ -1,0 +1,12 @@
+.issues-header {
+  padding: 5px 10px 15px;
+  background-color: #f3f3f3;
+}
+
+.issues-header:empty {
+  display: none;
+}
+
+.issues-header .page-title {
+  margin-bottom: 10px;
+}

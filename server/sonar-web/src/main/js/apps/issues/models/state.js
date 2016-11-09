@@ -25,10 +25,9 @@ export default State.extend({
     page: 1,
     maxResultsReached: false,
     query: {},
-    facets: ['facetMode', 'types', 'resolutions'],
+    facets: ['types', 'resolutions'],
     isContext: false,
     allFacets: [
-      'facetMode',
       'issues',
       'types',
       'resolutions',

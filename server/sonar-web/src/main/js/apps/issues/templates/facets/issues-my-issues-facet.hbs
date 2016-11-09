@@ -1,0 +1,29 @@
+{{#unless isContext}}
+  <h1 class="page-title" {{#if user}}style="width: 100%"{{/if}}>{{t 'issues'}}</h1>
+{{/unless}}
+
+{{#if user}}
+  <ul class="radio-toggle pull-left">
+    <li>
+      <input type="radio" name="issues-page-my" value="my" id="issues-page-my-my" {{#if me}}checked{{/if}}>
+      <label for="issues-page-my-my">My Issues</label>
+    </li>
+    <li>
+      <input type="radio" name="issues-page-my" value="all" id="issues-page-my-all" {{#unless me}}checked{{/unless}}>
+      <label for="issues-page-my-all">All</label>
+    </li>
+  </ul>
+{{/if}}
+
+<ul class="radio-toggle pull-right">
+  <li>
+    <input type="radio" name="issues-page-mode" value="count" id="issues-page-mode-count"
+           {{#eq mode 'count'}}checked{{/eq}}>
+    <label for="issues-page-mode-count">{{t 'issues.facet.mode.issues'}}</label>
+  </li>
+  <li>
+    <input type="radio" name="issues-page-mode" value="effort" id="issues-page-mode-effort"
+           {{#eq mode 'effort'}}checked{{/eq}}>
+    <label for="issues-page-mode-effort">{{t 'issues.facet.mode.effort'}}</label>
+  </li>
+</ul>
