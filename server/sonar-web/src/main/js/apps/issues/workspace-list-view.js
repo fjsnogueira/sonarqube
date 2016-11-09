@@ -144,9 +144,6 @@ export default WorkspaceListView.extend({
   },
 
   serializeData () {
-    /* eslint-disable no-console */
-    console.log(this.options.app.state.toJSON());
-
     return {
       ...WorkspaceListView.prototype.serializeData.apply(this, arguments),
       state: this.options.app.state.toJSON()
