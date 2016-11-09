@@ -34,6 +34,11 @@ export default WorkspaceListView.extend({
   childViewContainer: '.js-list',
   emptyView: EmptyView,
 
+  initialize (options) {
+    WorkspaceListView.prototype.initialize.apply(this, arguments);
+    this.listenTo(options.app.state, 'change:total', this.render);
+  },
+
   bindShortcuts () {
     const that = this;
     const doAction = function (action) {
@@ -136,6 +141,16 @@ export default WorkspaceListView.extend({
   destroyChildren () {
     WorkspaceListView.prototype.destroyChildren.apply(this, arguments);
     this.$('.issues-workspace-list-component').remove();
+  },
+
+  serializeData () {
+    /* eslint-disable no-console */
+    console.log(this.options.app.state.toJSON());
+
+    return {
+      ...WorkspaceListView.prototype.serializeData.apply(this, arguments),
+      state: this.options.app.state.toJSON()
+    };
   }
 });
 
