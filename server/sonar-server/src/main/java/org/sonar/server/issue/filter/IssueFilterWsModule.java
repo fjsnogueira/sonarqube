@@ -25,14 +25,7 @@ public class IssueFilterWsModule extends Module {
   @Override
   protected void configureModule() {
     add(
-      IssueFilterService.class,
-      IssueFilterSerializer.class,
       IssueFilterWs.class,
-      IssueFilterJsonWriter.class,
-      org.sonar.server.issue.filter.AppAction.class,
-      org.sonar.server.issue.filter.ShowAction.class,
-      org.sonar.server.issue.filter.SearchAction.class,
-      org.sonar.server.issue.filter.FavoritesAction.class
-    );
+      org.sonar.server.issue.filter.AppAction.class);
   }
 }
