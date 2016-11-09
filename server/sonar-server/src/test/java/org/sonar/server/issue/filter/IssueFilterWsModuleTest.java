@@ -29,6 +29,6 @@ public class IssueFilterWsModuleTest {
   public void verify_count_of_added_components() {
     ComponentContainer container = new ComponentContainer();
     new IssueFilterWsModule().configure(container);
-    assertThat(container.size()).isEqualTo(2);
+    assertThat(container.size()).isEqualTo(4);
   }
 }
